@@ -12,6 +12,7 @@ var counter = 0;
 // https://www.google.com/search?q=what+is+a+zero+padded+number%3F
 
 const zeroPaddedNumber = (num) => {
+  // should stringify the nuber and place zeros before the first non-zero interger
   return sprintf('%05d', num);
 };
 
@@ -38,9 +39,22 @@ const writeCounter = (count, callback) => {
 
 // Public API - Fix this function //////////////////////////////////////////////
 
-exports.getNextUniqueId = () => {
-  counter = counter + 1;
-  return zeroPaddedNumber(counter);
+exports.getNextUniqueId = (callback) => {
+  readCounter((err, counterResult) => {
+    if (err) {
+      throw error
+    } else {
+      counterResult += 1;
+      console.log(counterResult);
+      writeCounter(counterResult, (err, result) => {
+        if (err) {
+          throw error
+        } else {
+          callback(null, result);
+        }
+      });
+    }
+  });
 };
 
 
